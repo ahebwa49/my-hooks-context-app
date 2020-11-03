@@ -3,18 +3,27 @@ import React, { useState } from 'react';
 type Props = {
   children: React.ReactNode;
 };
-const defaultTheme = 'white';
-const ThemeContext = React.createContext(defaultTheme);
+
+type ThemeContextType = {
+  theme: string;
+  setTheme: (value: string) => void;
+};
+
+const ThemeContext = React.createContext<ThemeContextType | undefined>(
+  undefined
+);
 export const useTheme = () => React.useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }: Props) => {
-  const [theme, setTheme] = useState(defaultTheme);
+  const [theme, setTheme] = useState(undefined);
 
   React.useEffect(() => {
     const currentTheme = 'lightblue';
     setTheme(currentTheme);
   }, []);
   return (
-    <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
   );
 };
